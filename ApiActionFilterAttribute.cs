@@ -19,6 +19,29 @@ namespace Attributes
         {
             string url = actionExecutedContext.Request.RequestUri.ToString();
             Logger.Debug($"end api request, url: [{url}]");
-        }        
+        }  
+        
+        
+        
+        
+        public static string GetBody(this HttpRequestMessage request)
+        {
+            string data = string.Empty;
+
+            var task = request.Content.ReadAsStreamAsync();
+            task.Wait();
+
+            var stream = new StreamReader(task.Result);
+            stream.BaseStream.Position = 0;
+            data = stream.ReadToEnd();
+
+            return data;
+        }
+        
     }
+    
+    
 }
+
+
+
